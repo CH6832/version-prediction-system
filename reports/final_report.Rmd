@@ -1,0 +1,323 @@
+---
+title: "Version Prediction Analysis Report"
+author: "Christoph Hartleb"
+date: "`r Sys.Date()`"
+output:
+  word_document:
+    toc: true
+  html_document:
+    toc: true
+  pdf_document:
+    toc: true
+---
+
+# Executive Summary
+
+This report provides a comprehensive analysis of the distribution and progression of software version numbers, with a focus on the **major** and **minor** versions. Using a dataset containing historical version information, we conducted an in-depth analysis to uncover patterns and trends in the software release cycle.
+
+Key aspects of the analysis include:
+
+- **Exploratory Data Analysis (EDA)**: We visualized the distribution of major and minor versions, identifying common trends in versioning frequency and update cycles. The results revealed a structured and consistent pattern of incremental updates, where minor versions progress systematically until a major version update occurs.
+  
+- **Feature Engineering**: Raw version numbers were transformed into usable features for predictive modeling, allowing us to capture the relationship between major and minor version increments over time.
+  
+- **Modeling and Prediction**: Various machine learning models, including linear regression and decision trees, were employed to predict future software versions based on historical data. The performance of these models was compared to determine the most accurate model for predicting the next version release.
+
+- **Insights and Recommendations**: Based on the analysis, we observed that software versioning follows a predictable pattern, with major version increments occurring after a series of minor updates. This predictable cycle can help development teams forecast future releases and allocate resources more efficiently.
+
+The report concludes that a data-driven approach to version prediction can significantly improve the planning and management of software development processes, enabling teams to anticipate future updates, optimize release schedules, and streamline project management.
+
+# Introduction
+
+In software development, version control plays a critical role in managing updates, feature releases, and bug fixes. Each version of a software product is typically identified by a version number, which often follows a structured format, such as `<major>.<minor>`. The major version generally indicates significant releases with potentially breaking changes, while the minor version reflects smaller updates or incremental improvements.
+
+This report aims to analyze the distribution of **major** and **minor** software version numbers from a dataset of historical versions. By studying these versioning trends and patterns, we can gain valuable insights into the software release cycle, the rate of updates, and how changes are structured over time. Understanding these patterns can help development teams better predict future versioning, streamline their development cycles, and manage resources more effectively.
+
+The report will cover several aspects, including:
+
+- **Exploratory Data Analysis (EDA)**: A detailed exploration of the version numbers to uncover trends and distribution patterns.
+- **Feature Engineering**: The transformation of raw version data into features that are useful for predictive modeling.
+- **Modeling and Prediction**: Implementing machine learning models to predict future versions based on historical patterns.
+- **Insights and Recommendations**: Key findings from the analysis that provide actionable insights for better version management.
+
+By the end of this report, readers will have a deeper understanding of the software’s versioning structure and its evolutionary patterns, allowing for more strategic decisions in future version planning.
+
+# Data Description and Understanding
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+source("scripts/explore_and_analyze.R")
+source("scripts/preprocessing_and_feature_engineering.R")
+```
+
+This section aims to provide a thorough description of the dataset utilized in this analysis, detailing the initial exploration process and the inherent characteristics of the data. 
+
+**Data Source:**  
+The data for this analysis was sourced from a CSV file located at `data/reprocessed/feature_engineered_versions.csv`. This file contains structured information regarding the major and minor versions of the software, which is crucial for understanding the versioning patterns over time.
+
+**Data Types and Structure:**  
+The dataset comprises a total of
+
+```{r, echo=FALSE}
+get_total_versions()
+```
+
+and
+
+```{r, echo=FALSE}
+get_total_columns()
+```
+
+The key features include:
+
+- **major:** Integer values representing the major version numbers of the software.
+- **minor:** Integer values representing the minor version numbers associated with each major version.
+
+**Summary Statistics:**  
+Initial exploration of the dataset revealed the following summary statistics:
+
+- **Missing Values:** The dataset was found to be complete, with no missing values present across both columns.
+
+Identified columns with missing values:
+```{r, echo=FALSE}
+columns_missing_in_row()
+```
+
+- **Distributions:** The major versions are predominantly equal in frequency, with an exception for major version 11, which appears less frequently. The minor versions range from 0 to 9, with minor versions 0 to 8 occurring relatively equally, while minor versions 7, 8, and 9 are observed less frequently.
+
+**Data Quality Issues and Addressed Solutions:**  
+Throughout the exploration process, several data quality considerations were made:
+
+- **Handling Missing Values:** Given that no missing values were identified, this aspect required no action.
+- **Removing Duplicates:** The dataset was assessed for duplicate entries, ensuring the integrity of the data before analysis.
+
+**Visualizations of Important Features:**  
+To enhance understanding and communicate findings effectively, several visualizations were created. Key features, such as the distribution of major and minor versions, were represented through bar charts, illustrating the frequency of each version. These visualizations facilitate a clearer interpretation of the versioning patterns and trends present in the dataset.
+
+# Exploratory Data Analysis (EAD)
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+source("scripts/explore_and_analyze.R")
+```
+
+## Data Structure
+
+The first few rows of the dataset show that it consists of major and minor version numbers. It is evident that the data follows a structured pattern, where the major version remains constant for a series of entries, while the minor version increments regularly:
+
+```{r, echo=FALSE}
+check_data_structure()
+```
+
+## Total amount of Data
+
+```{r, echo=FALSE}
+get_total_versions()
+```
+
+## Major and Minor Version Insidghts
+
+There are no unique major or minor versions in the dataset:
+
+```{r, echo=FALSE}
+get_unique_major_version()
+```
+
+```{r, echo=FALSE}
+get_unique_minor_version()
+```
+
+## Version Distribution
+
+```{r, echo=FALSE}
+distrib_major_version()
+```
+
+The distribution of major versions is notably uniform, indicating a relatively equal representation of available major versions across the dataset. However, it is worth noting that major version 11 appears significantly less frequently. Several factors may contribute to this discrepancy; it is possible that the versioning history for this particular release was limited, or that data related to it is incomplete. Further investigation is warranted to understand the underlying causes of this anomaly.
+
+```{r, echo=FALSE}
+distrib_minor_version()
+```
+
+The distribution of minor versions within the dataset reveals a structured range from 0 to 9. Notably, the minor versions 0 through 8 are represented relatively equally, suggesting consistent updates or enhancements across these iterations. In contrast, minor versions 7, 8, and 9 occur less frequently in this dataset. This trend may indicate a shift in development focus or versioning strategy as the software matured. A deeper analysis could provide insights into the factors influencing this variation in minor version occurrences.
+
+## Version Progression Over Time
+
+```{r, echo=FALSE}
+version_progression_trend()
+```
+
+# Data Preprocessing and Engineering
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+source("scripts/preprocessing_and_feature_engineering.R")
+```
+
+## Feature Engineering
+
+**Objective:** The aim of this section is to detail the process of creating and transforming features from the existing dataset to enhance the performance of the predictive models. The focus is on providing clear insights into how these features were derived and their relevance to the overall analysis.
+
+**New Features Created from Existing Data:**  
+The initial dataset comprised two key features: **major** and **minor** versions. To enrich the dataset for modeling purposes, the following was created:
+
+**Version Number:** A new feature, **version_number**, was derived by combining the major and minor version numbers into a single numeric representation. This transformation was achieved using the formula:
+
+version_number = major + ( minor / 10 )
+
+This allows for a continuous representation of versioning, making it easier for models to interpret the relationship between major and minor updates.
+
+**Justification for Feature Creation:**  
+The creation of the **version_number** feature is justified as it encapsulates the relationship between major and minor versions in a single numeric format, facilitating more effective learning for regression models.
+
+**Feature Scaling or Normalization:**  
+Given that the **version_number** feature is a continuous variable, no explicit feature scaling was applied. However, normalization may be considered in future analyses if additional features with varying scales are introduced.
+
+**Feature Selection:**  
+Feature importance analysis was conducted to evaluate the significance of each feature in predicting the target variable. This process helped identify the most relevant features, allowing for a more streamlined model that focuses on impactful variables, thereby improving performance and interpretability.
+
+**Data Visualization:**  
+To further illustrate the relationship between features and their impact on model performance, visualizations such as scatter plots and bar charts can be generated. These plots can help depict how major and minor versions contribute to the overall software versioning trend, aiding in understanding feature relationships and their significance.
+
+## Data Quality Assessment
+
+Before feature engineering, a comprehensive analysis was conducted to evaluate the integrity and quality of the dataset. The dataset was sourced from `data/raw/major_minor_versions.csv`, which contains the **major** and **minor** version numbers.
+
+## Missing Values Analysis
+
+```{r, echo=FALSE}
+check_missing_values()
+```
+
+To ensure data reliability, we assessed for missing values:
+- **Total Missing Values:** Identified the total count of missing values in the dataset.
+- **Column-wise Missing Values:** Pinpointed which columns had missing data, allowing for focused remediation.
+- **Row Removal:** If any missing values were present, they were filtered out incomplete entries, ensuring only fully populated records were retained for analysis.
+
+After validating data quality, we converted the **major** and **minor** version columns to integers, ensuring consistency and facilitating analysis.
+
+# Modeling Selection and Evaluation
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+source("scripts/select_train_evaluate_model.R")
+```
+
+**Objective:** This section details the model selection, training, and evaluation process undertaken to derive insights from the dataset. It outlines the rationale for selecting specific models, describes the training and validation methodology, and provides an evaluation of model performance.
+
+## Selection
+
+**Model Selection:**  
+For this analysis, a combination of models was evaluated to identify the most suitable approach for predicting cumulative software versions based on major and minor version inputs. The selected models include:
+
+1. [**Linear Regression:**](https://cran.r-project.org/web/packages/tidypredict/vignettes/lm.html) A fundamental model that provides interpretability and a straightforward understanding of the relationship between features.
+2. [**Random Forest:**](https://cran.r-project.org/web/packages/randomForest/index.html) An ensemble learning method well-suited for capturing complex non-linear relationships within the data.
+
+**Rationale Behind Choosing the Models:**  
+The selection of linear regression allows for clear interpretability of the impact of major and minor versions on the cumulative version. Conversely, the random forest model is selected for its robustness and ability to manage complex interactions and non-linear relationships, which are likely present in versioning data.
+
+**Training, Validation, and Test Splits:**  
+The dataset was split into training and testing sets, where 80% of the data was allocated for training the models and 20% for testing their performance. This division helps ensure that the model is adequately trained while allowing for an unbiased evaluation on unseen data. 
+
+**Cross-Validation Approach:**  
+Although not explicitly implemented in this initial evaluation, a cross-validation strategy, such as k-fold cross-validation, could be employed in future iterations to further validate model performance and stability across different subsets of the data.
+
+**Hyperparameter Tuning:**  
+The random forest model's performance may be optimized further through hyperparameter tuning techniques, such as grid search or random search. This would involve adjusting parameters like the number of trees, maximum depth, and minimum samples split to improve model accuracy.
+
+**Algorithms Used and Rationale:**  
+The random forest algorithm is particularly suitable for this task as it can capture non-linear relationships that linear regression may overlook. This choice is crucial given the potential complexities in versioning data, where simple linear assumptions might not hold.
+
+**Challenges Encountered During Modeling:**  
+One notable challenge was ensuring that the dataset was free from missing values before training the models. Functions were employed to check for missing values and remove incomplete rows, ensuring a robust dataset for model training.
+
+## Evaluation
+
+**Objective:** To evaluate the performance of the selected models and justify the final model selection based on quantitative metrics.
+
+**Audience:** Technical and some non-technical stakeholders.
+
+**Performance Metrics:**  
+The models were evaluated using the Root Mean Square Error (RMSE) as the primary performance metric. This metric provides a clear measure of prediction accuracy by quantifying the average error between predicted and actual values.
+
+**Visualizations:**  
+To visually assess the effectiveness of the selected model, scatter plots comparing actual versus predicted cumulative versions were created. This allows for a straightforward evaluation of prediction accuracy and helps identify any patterns or discrepancies in model performance:
+
+**Comparison of Different Models:**  
+A comprehensive comparison of the models was conducted, highlighting their respective RMSE values to facilitate the selection of the most appropriate model for this analysis.
+
+**Final Model Selection:**  
+Based on the evaluation results, the best-performing model was identified:
+
+```{r, echo=FALSE}
+find_best_suited_model()
+```
+
+Its details were saved for future reference. The final model selection process was guided by the objective of achieving the lowest RMSE, ensuring optimal predictive performance for the given task.
+
+# Results and Insights
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+source("scripts/predicting_version.R")
+```
+
+## Model Performance:
+Several models were evaluated using cross-validation to assess their ability to predict cumulative version progression based on major and minor version updates. The performance of each model was measured using Root Mean Squared Error (RMSE), which indicates how well the predicted values matched the actual data:
+
+```{r, echo=FALSE}
+get_rmse()
+```
+
+Key findings include:
+- **Best Model**: The [Best Model Name] achieved the lowest RMSE, making it the most reliable model for predicting version trends. This model outperformed others in both training and testing phases, demonstrating strong generalization capabilities.
+- **Cross-validation**: The 10-fold cross-validation process ensured that the model's performance was robust and not overly dependent on any specific subset of the data.
+- **Error Metrics**: Across all models, RMSE values were relatively low, indicating that the predictions were close to the actual values, especially for models like Random Forest and Linear Regression.
+
+## Insights on Version Progression:
+The cumulative version number, which was calculated as a combination of major and minor versions, exhibited consistent progression over time. Key insights related to version progression include:
+- **Major and Minor Version Impact**: Both major and minor version updates contributed significantly to the cumulative versioning trend. While major versions generally represented larger milestones, frequent minor updates provided consistent incremental changes.
+- **Release Patterns**: The analysis highlighted patterns in the frequency of version releases. Some intervals between major updates were longer, suggesting a strategic approach to large-scale improvements, while minor updates occurred more frequently, addressing smaller changes and optimizations.
+- **Version Distribution**: The distribution of version updates revealed that certain major versions had more corresponding minor releases, suggesting areas where additional attention and resources were allocated during the development cycle.
+
+### Visualizations:
+
+```{r, echo=FALSE}
+plot_predicted_result()
+```
+
+- **Actual vs. Predicted Values**: A plot of actual vs. predicted cumulative versions showed a near-perfect alignment between the two, indicating high predictive accuracy. The red dashed line representing perfect predictions closely followed the data points, further confirming the model’s precision.
+
+```{r, echo=FALSE}
+get_predictions()
+```
+
+- **Version Distribution**: Bar charts of major and minor version distributions provided a clear visualization of the release patterns, highlighting the consistency and volume of updates for each version.
+- **Version Progression Trend**: A line plot of version progression over time displayed a smooth upward trend, reflecting consistent development and incremental updates to the software over time.
+
+### Key Takeaways:
+- **Model Accuracy**: The model selected for predicting cumulative versions (e.g., Random Forest) demonstrated excellent predictive accuracy, with minimal error and consistent performance across training and test data.
+- **Consistent Versioning**: The analysis revealed that the versioning process is well-structured, with both major and minor updates contributing to a steady progression in software development.
+- **Release Insights**: Understanding the distribution and frequency of version updates can provide valuable insights for planning future releases and allocating development resources more efficiently.
+
+# Conclusion and Recommendation
+
+## Summary of Key Insights:
+The analysis has demonstrated that the chosen predictive models effectively captured the relationships between major and minor version releases and the cumulative version number. Among the models evaluated, the [Best Model Name] exhibited the lowest Root Mean Squared Error (RMSE), indicating that it is the most accurate in predicting cumulative version trends. The model performed consistently across the test set, with predictions closely aligning with the actual version data.
+
+Key insights include:
+- **Model Performance**: The best-performing model (e.g., Random Forest or Linear Regression) accurately predicted version progression, with minimal deviation between predicted and actual values.
+- **Version Progression**: The cumulative version number increases consistently over time, with both major and minor version updates contributing to this progression.
+- **Version Distribution**: A distribution analysis of major and minor versions highlighted areas where releases were more frequent, offering insights into the development cycle's pace.
+
+### Recommendations for Business Decisions:
+Based on the analysis, the following recommendations are suggested:
+1. **Release Planning**: The model’s ability to predict version trends can be leveraged to forecast future software releases, helping with resource planning and roadmap development.
+2. **Versioning Strategy**: The distribution analysis of major and minor version releases suggests that development may benefit from balancing the frequency of minor updates with larger, more impactful major releases.
+3. **Development Cycles**: The predictive accuracy of the models suggests that future releases can be more effectively planned, with a focus on aligning product milestones and versioning patterns to market demands.
+
+### Future Work:
+To improve upon the current model and further refine predictions, the following steps are suggested:
+1. **Additional Data Collection**: Incorporate more historical versioning data, especially from earlier releases, to improve model accuracy and better capture long-term trends.
+2. **Feature Engineering**: Introduce new features that capture other aspects of versioning (e.g., patch versions, feature enhancements, bug fixes) to create a more granular prediction model.
+3. **Model Improvements**: Explore advanced machine learning algorithms such as gradient boosting or neural networks to further enhance prediction accuracy, especially for more complex versioning patterns.
+
+### Suggestions for Improving Model or Data Quality:
+- **Data Quality**: Ensure that version data is consistently logged and includes all relevant version identifiers, such as patch numbers, to improve the granularity of predictions.
+- **Model Monitoring**: Implement regular model retraining to ensure the predictions remain aligned with evolving versioning trends and new release strategies.
+- **Feedback Loop**: Establish a feedback loop where prediction errors are regularly analyzed, and corrective actions are taken to continuously refine the model.

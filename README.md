@@ -140,6 +140,10 @@ Comprehensive reporting summarizes the model's performance, key insights from th
 * **RStudio IDE** - [RStudio IDE User Guide](https://docs.posit.co/ide/user/)
 * **Markdown** - [Markdown Syntax](https://www.markdownguide.org/basic-syntax/)
 
+## AI Assistance
+
+The ChatGPT-4 model was utilized throughout the project to assist with fixing bugs, refining code logic, and enhancing the overall readability of documentation. It also played a key role in correcting grammar, spelling, and improving the clarity of all textual components, ensuring the documentation is polished and professional.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.

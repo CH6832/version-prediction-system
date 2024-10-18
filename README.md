@@ -82,16 +82,17 @@ Comprehensive reporting summarizes the model's performance, key insights from th
 ## Content overview
 
     .
-    ├── .Rprofile                    # R profile settings for the project
     ├── data/
-    │   ├── processed/               # Contains processed/cleaned data
-    │   ├── raw/                     # Original raw dataset
-    │   └── test/                    # Test data used for model evaluation
-    ├── version-prediction-system.Rproj  # RStudio project file
-    ├── README.Rmd                   # Project information in RMarkdown format
-    ├── renv/                        # Package and environment management
-    ├── renv.lock                    # Lock file to ensure package consistency
-    └── scripts/                     # Custom scripts for data analysis and modeling
+    │   ├── preprocessed/ - Contains processed/cleaned data
+    │   ├── raw/ - Original raw dataset
+    │   └── test/ - Test data used for model evaluation
+    ├── models/ - Model for Predictions
+    ├── scripts/ - R scripts relevant for the project
+    ├── COPYRIGHT - Project copyright
+    ├── LICENSE - Project License
+    ├── version-prediction-system.Rproj - RStudio project file
+    ├── README.Rmd - Project information in RMarkdown format
+    └── renv.lock - Lock file to ensure package consistency
 
 ## How to open the project
 

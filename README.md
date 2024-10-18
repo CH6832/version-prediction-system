@@ -109,24 +109,29 @@ Comprehensive reporting summarizes the model's performance, key insights from th
 
 ## How to run the project
 
-1. After opening the project, ensure all necessary R packages are installed. Run the following command to restore the environment:
+0. Run the following command to restore the environment:
    ```r
    renv::restore()
    ```
 
-2. Load the main dataset by running the data preprocessing script:
+1. Load the raw data and explore/analyze:
    ```r
-   source("scripts/preprocessing.R")
+   source("scripts/explore_and_analyze.R")
+   ```
+
+2. Preprocess the raw data and do the feature engineering:
+   ```r
+   source("scripts/preprocessing_and_feature_engineering.R")
    ```
 
 3. Execute the model training and evaluation pipeline:
    ```r
-   source("scripts/model_evaluation.R")
+   source("scripts/select_train_evaluate_model.R")
    ```
 
-4. Review the results and generate the report:
+4. Predict the next version:
    ```r
-   source("scripts/reporting.R")
+   source("scripts/predicting_version.R")
    ```
 
 ## What Resources are used to create the project?

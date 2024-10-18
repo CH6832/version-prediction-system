@@ -92,15 +92,6 @@ write.csv(test_data, "data/preprocessed/testing_versions.csv", row.names = FALSE
 #'
 #' @note This function uses 10-fold cross-validation, which may take longer to execute for large datasets. 
 #'       The RMSE values represent the predictive performance of the models on unseen data.
-#'
-#' @examples
-#' \dontrun{
-#' # Assuming `train_data` is a data frame with the appropriate columns
-#' results <- eval_models(train_data)
-#' print(results)
-#' }
-#' 
-#' @export
 eval_models <- function(train_data) {
   
   # Define control for 10-fold cross-validation
@@ -164,23 +155,6 @@ model_results <- eval_models(train_data)
 #' In contrast, the random forest model can capture more complex, non-linear relationships. 
 #' 
 #' The random forest model may take longer to train, especially with large datasets or many features.
-#'
-#' @examples
-#' \dontrun{
-#' # Assuming 'train_data' has the appropriate structure and columns
-#' models <- list(
-#'   linear = lm(cumulative_version ~ major + minor, data = train_data),
-#'   rf = randomForest(cumulative_version ~ major + minor, data = train_data)
-#' )
-#' 
-#' # Access the linear model
-#' linear_model <- models$linear
-#' 
-#' # Access the random forest model
-#' rf_model <- models$rf
-#' }
-#' 
-#' @export
 models <- list(
   linear = lm(cumulative_version ~ major + minor, data = train_data),
   rf = randomForest(cumulative_version ~ major + minor, data = train_data)
@@ -212,15 +186,6 @@ models <- list(
 #' The function relies on \code{model_results}, which is expected to be a global data frame containing 
 #' the RMSE values for each model. If this object is not available or does not contain the expected 
 #' structure, the function will throw an error.
-#'
-#' @examples
-#' \dontrun{
-#' # Example usage assuming `model_results` is available and contains the necessary information:
-#' best_model_name <- find_best_suited_model()
-#' # Output: "The best model is: linear with RMSE: 0.025"
-#' }
-#'
-#' @export
 find_best_suited_model <- function() {
   # Find the name of the model with the lowest RMSE
   best_model_name <- model_results[which.min(model_results$RMSE), "Model"]

@@ -20,6 +20,7 @@
   - [How to open the project](#how-to-open-the-project)
   - [How to run the project](#how-to-run-the-project)
   - [What Resources are used to create the project?](#what-resources-are-used-to-create-the-project)
+  - [AI Assistance](#ai-assistance)
   - [License](#license)
   - [Copyright](#copyright)
 

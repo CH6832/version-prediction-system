@@ -3,7 +3,6 @@
 # Date:         2024-10-16
 # Description:  Exploration and analyzation version data, specifically major and
 #               minor software.
-#               version numbers.
 # Version:      1.0
 # 
 # © 2024 Christoph Hartleb. All rights reserved.
@@ -73,10 +72,6 @@ unique_minor_versions <- length(unique(df$minor))
 #' @return An integer value representing the total number of version records in the dataset.
 #' @note Ensure that the dataset has been properly loaded and the `total_versions` 
 #'       variable has been computed before calling this function.
-#' @examples
-#' total <- get_total_versions()
-#' print(total)
-#' @export
 get_total_versions <- function() {
   
   return(total_versions)
@@ -92,10 +87,6 @@ get_total_versions <- function() {
 #' @return An integer value representing the total number of version records in the dataset.
 #' @note Ensure that the dataset has been properly loaded and the `total_columns` 
 #'       variable has been computed before calling this function.
-#' @examples
-#' total_columns <- get_total_columns()
-#' print(total_columns)
-#' @export
 get_total_columns <- function() {
   
   return(total_columns)
@@ -113,14 +104,6 @@ get_total_columns <- function() {
 #' @note Ensure that the dataset containing major and minor version data has been 
 #'       loaded and that the variable `unique_major_versions` has been correctly 
 #'       calculated before calling this function.
-#' @examples
-#' # Example usage:
-#' get_unique_major_version()  # Displays the number of unique major versions in the console.
-#'
-#' # Ensure that the dataset is loaded, and the `unique_major_versions` variable 
-#' # is defined based on the dataset.
-#' 
-#' @export
 get_unique_major_version <- function() {
   
   return(cat(paste("Unique Major Versions: ", unique_major_versions, "\n")))
@@ -138,14 +121,6 @@ get_unique_major_version <- function() {
 #' @note Ensure that the dataset containing major and minor version data has been 
 #'       loaded and that the variable `unique_minor_versions` has been correctly 
 #'       calculated before calling this function.
-#' @examples
-#' # Example usage:
-#' get_unique_minor_version()  # Displays the number of unique minor versions in the console.
-#'
-#' # Ensure that the dataset is loaded, and the `unique_minor_versions` variable 
-#' # is defined based on the dataset.
-#' 
-#' @export
 get_unique_minor_version <- function() {
   
   return(cat(paste("Unique Minor Versions: ", unique_minor_versions, "\n")))
@@ -165,15 +140,6 @@ get_unique_minor_version <- function() {
 #'       `version.major`. If the column does not exist, the function will stop 
 #'       with an error message. The function will also adjust the text of x-axis 
 #'       labels to ensure readability.
-#' @examples
-#' # Example usage:
-#' # Assuming `df` is a data frame with a `version.major` column:
-#' plot <- distrib_major_version()
-#' print(plot)  # To display the plot
-#'
-#' # Make sure that `df` contains the correct structure with major version data.
-#' 
-#' @export
 distrib_major_version <- function() {
   # Ensure the major column exists
   if (!"version.major" %in% colnames(df)) {
@@ -212,15 +178,6 @@ distrib_major_version <- function() {
 #' @note The function will stop execution and return an error message if the input 
 #'       data frame (`df`) does not contain a 'version.minor' column. It also rotates 
 #'       the x-axis labels to ensure they are easy to read.
-#' @examples
-#' # Example usage:
-#' # Assuming `df` is a data frame with a `version.minor` column:
-#' plot <- distrib_minor_version()
-#' print(plot)  # To display the plot
-#'
-#' # Ensure that `df` contains the correct structure with minor version data.
-#' 
-#' @export
 distrib_minor_version <- function() {
   # Ensure the minor column exists
   if (!"version.minor" %in% colnames(df)) {
@@ -262,15 +219,6 @@ distrib_minor_version <- function() {
 #' @note The function assumes the input data frame `df` contains `version.major` and 
 #'       `version.minor` columns. It adds an index column to represent the sequential 
 #'       order of rows for plotting.
-#' @examples
-#' # Example usage:
-#' # Assuming `df` contains columns `version.major` and `version.minor`:
-#' trend_plot <- version_progression_trend()
-#' print(trend_plot)  # To display the trend plot
-#'
-#' # Ensure that `df` has the necessary version columns before running this function.
-#' 
-#' @export
 version_progression_trend <- function() {
     df$index <- 1:nrow(df)
     
@@ -281,4 +229,3 @@ version_progression_trend <- function() {
     
     return(plot)
 }
-
